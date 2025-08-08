@@ -1,0 +1,23 @@
+### Sign up
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Husan Choriyev",
+  "email": "choriyevhusan74@gmail.com",
+  "password": "root123",
+  "phoneNumber": "+998901234567"
+}
+
+### Sign in
+POST http://localhost:8080/auth/signin
+Content-Type: application/json
+
+{
+  "email": "choriyevhusan74@gmail.com",
+  "password": "root123"
+}
+
+### confirm code
+GET http://localhost:8080/auth/confirm?code=820584&email=choriyevhusan74@gmail.com
+###

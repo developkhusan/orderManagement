@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  backend:
+    image: management:latest
+    container_name: my-app
+    networks:
+      - my_app
+    depends_on:
+      - db_postgres
+  db_postgres:
+    image: postgres:latest
+    container_name: my_db
+    environment:
+      - POSTGRES_DB=market
+      - POSTGRES_USER=my_user
+      - POSTGRES_PASSWORD=root123
+    networks:
+      - my_app
+networks:
+  my_app:
