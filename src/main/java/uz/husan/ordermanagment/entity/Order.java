@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "buyurtma")
 public class Order extends AbsEntity {
     @ManyToOne
     private User customer;
@@ -29,5 +30,5 @@ public class Order extends AbsEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
     @CreationTimestamp
-    private LocalDateTime or;
+    private LocalDateTime orderDateTime;
 }
