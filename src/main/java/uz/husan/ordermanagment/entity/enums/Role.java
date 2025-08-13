@@ -1,10 +1,8 @@
 package uz.husan.ordermanagment.entity.enums;
 
-public enum Role {
-    ADMIN,
-    USER,
-    MANAGER,
-    DELIVERY,
-    SELLER,
-    CUSTOMER_SERVICE,
-}
+    public enum Role {
+        ROLE_ADMIN,
+        ROLE_DOCTOR,
+        ROLE_USER
+    }
+

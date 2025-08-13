@@ -29,8 +29,6 @@ public class SecurityConfig {
                             auth
                                 .requestMatchers(
                                         "/auth/**",
-                                        "/company/**",
-                                        "/invoice/**",
                                         "/swagger-ui/**",
                                         "/v3/**",
                                         "/webjars/**",
