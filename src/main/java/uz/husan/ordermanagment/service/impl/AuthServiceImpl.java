@@ -68,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(userDTORequest.getPassword()))  ;
         user.setEnabled(false);
         user.setRole(Role.USER);
-        user.setBalance(00.00);
+
         String code = generateCode();
         user.setConfCode(code);
         userRepository.save(user);
