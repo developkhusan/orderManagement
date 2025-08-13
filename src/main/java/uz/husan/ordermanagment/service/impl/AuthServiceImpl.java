@@ -112,9 +112,7 @@ public class AuthServiceImpl implements AuthService {
                         .message("Please confirm your email")
                         .build();
             }
-/*
-            String s = new String(Base64.getEncoder().encode(user.getEmail().getBytes()));
-*/
+
             String s = jwtService.generateToken(user.getUsername());
             return ResponseMessage.builder()
                     .data(user)

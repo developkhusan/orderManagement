@@ -6,6 +6,8 @@ services:
     container_name: my-app
     networks:
       - my_app
+    ports:
+      - "8080:8080"
     depends_on:
       - db_postgres
   db_postgres:
@@ -15,6 +17,8 @@ services:
       - POSTGRES_DB=market
       - POSTGRES_USER=my_user
       - POSTGRES_PASSWORD=root123
+    ports:
+      - "5433:5432"
     networks:
       - my_app
 networks:

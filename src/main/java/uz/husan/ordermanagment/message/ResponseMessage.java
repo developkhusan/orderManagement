@@ -1,9 +1,11 @@
 package uz.husan.ordermanagment.message;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @Builder
 public class ResponseMessage {
     private Boolean success;

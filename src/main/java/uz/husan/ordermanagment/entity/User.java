@@ -3,6 +3,8 @@ package uz.husan.ordermanagment.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +13,8 @@ import uz.husan.ordermanagment.entity.enums.Role;
 import java.util.Collection;
 import java.util.List;
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
 public class User extends AbsEntity implements UserDetails {
@@ -28,6 +31,18 @@ public class User extends AbsEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_"+role));
+    }
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
