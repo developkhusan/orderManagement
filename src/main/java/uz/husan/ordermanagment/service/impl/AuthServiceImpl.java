@@ -70,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(Role.USER);
 
         String code = generateCode();
-        user.setConfCode(code);
+        user.setConfCodew fk; ewk;f e(code);
         userRepository.save(user);
         sendVerificationCode(userDTORequest.getEmail(),code);
         return ResponseMessage.builder().success(true).message("sign up done..").data(s).build();
