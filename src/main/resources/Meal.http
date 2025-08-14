@@ -1,6 +1,6 @@
 ### Add Meal
-POST http://localhost:8080/meal
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+POST http://localhost:8080/meal/create
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
 Content-Type: application/json
 
 {
@@ -21,22 +21,22 @@ Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21h
 ### Put Meal
 ### Update Meal by ID
 ##################################
-PUT http://localhost:8080/meal?mealId=1
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+PUT http://localhost:8080/meal/update?mealId=1
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
 Content-Type: application/json
 
 {
-  "name": "Updated Product Name",
-  "description": "Updated Product Description",
+  "name": "Osh",
+  "description": "This is a delicious Osh with fresh ingredients.",
   "price": 150.0,
-  "category": "Updated Category",
+  "category": "Pasta",
   "imageUrl": "http://example.com/new-image.jpg",
-  "chickenId": 2
+  "chickenId":5
 }
 
 ##################################
 ### Delete Meal
 ### Delete Meal by ID
 ##################################
-DELETE http://localhost:8080/meal?id=2
+DELETE http://localhost:8080/meal/delete?id=2
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8

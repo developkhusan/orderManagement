@@ -16,6 +16,7 @@ import uz.husan.ordermanagment.ServiceJWT.JWTService;
 
 
 import java.util.Base64;
+import java.util.Optional;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -103,11 +104,18 @@ public class AuthServiceImpl implements AuthService {
     }
     @Override
     public ResponseMessage signin(EmailAndPasswordDTO emailAndPasswordDTO) {
-        User user = userRepository.findByEmail(emailAndPasswordDTO.getEmail()).orElseThrow();
-        if (passwordEncoder.matches(emailAndPasswordDTO.getPassword(), user.getPassword())) {
-            if (!user.getEnabled()) {
+        Optional<User> user = userRepository.findByEmail(emailAndPasswordDTO.getEmail());
+        if (user.isEmpty()) {
+            return ResponseMessage.builder()
+                    .data(emailAndPasswordDTO.getEmail())
+                    .success(false)
+                    .message("User not found")
+                    .build();
+        }
+        if (passwordEncoder.matches(emailAndPasswordDTO.getPassword(), user.get().getPassword())) {
+            if (!user.get().getEnabled()) {
                 return ResponseMessage.builder()
-                        .data(emailAndPasswordDTO.getEmail())
+                        .data(emailAndPasswordDTO.  getEmail())
                         .success(false)
                         .message("Please confirm your email")
                         .build();
@@ -115,7 +123,7 @@ public class AuthServiceImpl implements AuthService {
 /*
             String s = new String(Base64.getEncoder().encode(user.getEmail().getBytes()));
 */
-            String s = jwtService.generateToken(user.getUsername());
+            String s = jwtService.generateToken(user.get().getUsername());
             return ResponseMessage.builder()
                     .data(user)
                     .success(true)
