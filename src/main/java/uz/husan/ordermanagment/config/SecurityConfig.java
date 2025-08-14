@@ -29,7 +29,7 @@ public class SecurityConfig {
                             auth
                                 .requestMatchers(
                                         "/auth/**",
-                                        "/invoice/**",
+                                        "/chef/**",
                                         "/swagger-ui/**",
                                         "/v3/**",
                                         "/webjars/**",

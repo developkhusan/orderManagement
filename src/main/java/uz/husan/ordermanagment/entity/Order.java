@@ -22,12 +22,15 @@ import java.util.List;
 public class Order extends AbsEntity {
     @ManyToOne
     private User client;
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    private String delivererName;
     private BigDecimal totalAmount;
-    private LocalDateTime deliveryDate;
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
     @CreationTimestamp
     private LocalDateTime orderDateTime;
+    private LocalDateTime deliveryDate;
+
 }
