@@ -29,13 +29,13 @@ public class SecurityConfig {
                             auth
                                 .requestMatchers(
                                         "/auth/**",
-                                        "/company/**",
+                                        "/meal/get-list",
                                         "/invoice/**",
                                         "/swagger-ui/**",
                                         "/v3/**",
                                         "/webjars/**",
                                         "/swagger-ui.html").permitAll()
-                                    .requestMatchers("/product/**").hasRole("ADMIN")
+                                    .requestMatchers("/chicken/**,/meal/**").hasRole("ADMIN")
                                     .anyRequest()
                                 .authenticated()
                 )

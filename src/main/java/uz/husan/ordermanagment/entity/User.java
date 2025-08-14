@@ -24,6 +24,7 @@ public class User extends AbsEntity implements UserDetails {
     private Boolean enabled;
     private String confCode;
     private Double balance;
+    private String userLocation;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

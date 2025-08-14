@@ -12,7 +12,7 @@ import uz.husan.ordermanagment.entity.enums.Role;
 import uz.husan.ordermanagment.message.ResponseMessage;
 import uz.husan.ordermanagment.repository.UserRepository;
 import uz.husan.ordermanagment.service.AuthService;
-import uz.husan.ordermanagment.service.JWTService;
+import uz.husan.ordermanagment.ServiceJWT.JWTService;
 
 
 import java.util.Base64;

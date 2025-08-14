@@ -1,0 +1,42 @@
+### Add Meal
+POST http://localhost:8080/meal
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+Content-Type: application/json
+
+{
+  "name": "Mini Lavash",
+  "description": "A delicious mini lavash with fresh ingredients.",
+  "price": 50.0,
+  "category": "Fast Food",
+  "imageUrl": "http://example.com/lavash.jpg",
+  "chickenId": 1
+}
+
+##################################
+### Get All Meals
+GET http://localhost:8080/meal/get-list?page=1&size=2
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+
+##################################
+### Put Meal
+### Update Meal by ID
+##################################
+PUT http://localhost:8080/meal?mealId=1
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+Content-Type: application/json
+
+{
+  "name": "Updated Product Name",
+  "description": "Updated Product Description",
+  "price": 150.0,
+  "category": "Updated Category",
+  "imageUrl": "http://example.com/new-image.jpg",
+  "chickenId": 2
+}
+
+##################################
+### Delete Meal
+### Delete Meal by ID
+##################################
+DELETE http://localhost:8080/meal?id=2
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8

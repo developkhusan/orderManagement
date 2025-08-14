@@ -1,0 +1,44 @@
+######################################
+### Add Chicken
+######################################
+POST http://localhost:8080/chicken
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+Content-Type: application/json
+
+{
+  "chickenName": "Happy Chicken",
+  "chickenLocation": "Tashkent, Uzbekistan",
+  "phoneNumber": "+998901234567",
+  "ownerId": 1,
+  "imageUrl": "http://example.com/chicken-image.jpg"
+}
+
+#####################################
+####### get all chickens #######
+#####################################
+
+GET http://localhost:8080/chicken?page=1&size=10
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+
+##################################
+### Put Chicken
+### Update Chicken by ID
+##################################
+PUT http://localhost:8080/chicken?mealId=1
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+Content-Type: application/json
+
+{
+  "chickenName": "Happy Chicken",
+  "chickenLocation": "Tashkent, Uzbekistan",
+  "phoneNumber": "+998901234567",
+  "ownerId": 1,
+  "imageUrl": "http://example.com/chicken-image.jpg"
+}
+
+##################################
+### Delete Chicken
+### Delete Chicken by ID
+##################################
+DELETE http://localhost:8080/chicken?id=1
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8

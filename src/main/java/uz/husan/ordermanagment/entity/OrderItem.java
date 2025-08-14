@@ -24,7 +24,10 @@ public class OrderItem extends AbsEntity {
     @JoinColumn(name = "order_id")
     private Order order;
     @ManyToOne
-    private Product product;
+    private Meal meal;
+    @ManyToOne
+    @JoinColumn(name = "chef_id")
+    private User chef;
     private Integer quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;

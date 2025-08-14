@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uz.husan.ordermanagment.entity.User;
-import uz.husan.ordermanagment.service.JWTService;
+import uz.husan.ordermanagment.ServiceJWT.JWTService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -39,8 +39,8 @@ public class MyFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (authorization.startsWith("Bearer ")) {
-            authorization = authorization.substring(7);
+        if (authorization.startsWith("Bearer {")) {
+            authorization = authorization.substring(8);
             if (!jwtService.isValid(authorization)){
                 doFilter(request,response,filterChain);
                 return;

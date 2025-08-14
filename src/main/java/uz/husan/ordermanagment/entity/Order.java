@@ -18,11 +18,10 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "buyurtma")
+@Table(name = "orders")
 public class Order extends AbsEntity {
     @ManyToOne
-    private User customer;
-    private LocalDateTime orderDate;
+    private User client;
     private OrderStatus status;
     private BigDecimal totalAmount;
     private LocalDateTime deliveryDate;
