@@ -3,7 +3,27 @@
 #####################################
 
 GET http://localhost:8080/chicken/all?page=1&size=10
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3NjY5Mn0.WBLY8Vy2ACutaB6xWI9sC_KTxGSLCn6_rFfIy2f33uA
 
-### Get Chicken by ID of meals
-GET http://localhost:8080/chicken/get-by-meal-id?chickenId=1
+
+###
+GET http://localhost:8080/order/get-list?page=1&size=10&chickenId=4
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3NjY5Mn0.WBLY8Vy2ACutaB6xWI9sC_KTxGSLCn6_rFfIy2f33uA
+
+###
+
+POST http://localhost:8080/order/create
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3ODkzNH0.7Y1J8K71Suz2l3E2HZeRS07e5cgAizcEuuciahk4_eo
+Content-Type: application/json
+
+{
+  "mealId": 4,
+  "quantity": 1
+
+}
+
+###
+GET http://localhost:8080/order/buy
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3ODkzNH0.7Y1J8K71Suz2l3E2HZeRS07e5cgAizcEuuciahk4_eo
+Content-Type: application/json
+

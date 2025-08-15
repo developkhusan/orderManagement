@@ -22,6 +22,7 @@ import java.util.List;
 public class Order extends AbsEntity {
     @ManyToOne
     private User client;
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private BigDecimal totalAmount;
     private LocalDateTime deliveryDate;

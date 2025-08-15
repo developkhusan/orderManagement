@@ -26,17 +26,17 @@ public class SecurityConfig {
                 .cors(c->c.disable())
                 .authorizeHttpRequests(
                         auth ->
-                            auth
-                                .requestMatchers(
-                                        "/auth/**",
-                                        "/invoice/**",
-                                        "/swagger-ui/**",
-                                        "/v3/**",
-                                        "/webjars/**",
-                                        "/swagger-ui.html").permitAll()
-                                    .requestMatchers("/chicken/create,/meal/create").hasRole("ADMIN")
-                                    .anyRequest()
-                                .authenticated()
+                                auth
+                                        .requestMatchers(
+                                                "/auth/**",
+                                                "/chef/**",
+                                                "/swagger-ui/**",
+                                                "/v3/**",
+                                                "/webjars/**",
+                                                "/swagger-ui.html").permitAll()
+                                        .requestMatchers("/chicken/create,/meal/create").hasRole("ADMIN")
+                                        .anyRequest()
+                                        .authenticated()
                 )
                 .addFilterBefore(myFilter, UsernamePasswordAuthenticationFilter.class)
                 .userDetailsService(userDetailsService)
