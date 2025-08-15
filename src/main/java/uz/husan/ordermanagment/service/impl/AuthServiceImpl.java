@@ -15,6 +15,7 @@ import uz.husan.ordermanagment.service.AuthService;
 import uz.husan.ordermanagment.ServiceJWT.JWTService;
 
 
+import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
@@ -69,7 +70,8 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(userDTORequest.getPassword()))  ;
         user.setEnabled(false);
         user.setRole(Role.USER);
-        user.setBalance(00.00);
+        user.setBalance(new BigDecimal(0.0));
+        user.setBusy(false);
         String code = generateCode();
         user.setConfCode(code);
         userRepository.save(user);

@@ -16,7 +16,7 @@ Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21h
 ###
 ### Get Deliverer by ID
 #######################################
-PUT http://localhost:8080/chef/confirm-order?orderId=123&deliverId=456
+PUT http://localhost:8080/chef/confirm-order?orderId=2&deliverId=8
 Content-Type: application/json
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
 

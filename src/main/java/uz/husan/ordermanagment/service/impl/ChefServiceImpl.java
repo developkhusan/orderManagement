@@ -51,17 +51,24 @@ public class ChefServiceImpl implements ChefService {
         if (delivererOptional.isEmpty()) {
             return ResponseMessage.builder().success(false).message("Deliverer not found").data(null).build();
         }
+        if(delivererOptional.get().getBusy()) {
+            return ResponseMessage.builder().success(false).message("Deliverer is busy").data(null).build();
+        }
         User deliverer = delivererOptional.get();
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (orderOptional.isEmpty()) {
             return ResponseMessage.builder().success(false).message("Order not found").data(null).build();
         }
         Order order = orderOptional.get();
+        if (deliverer.getBalance().compareTo(order.getTotalAmount()) < 0) {
+            return ResponseMessage.builder().success(false).message("Deliverer not enough").data(null).build();
+        }
         if (order.getStatus() != OrderStatus.READY) {
             return ResponseMessage.builder().success(false).message("Order is not in Ready status").data(null).build();
         }
+        deliverer.setBusy(true);
         order.setStatus(OrderStatus.SHIPPED);
-        order.setDelivererName(deliverer.getFullName());
+        order.setDeliverer(deliverer);
         orderRepository.save(order);
         return ResponseMessage.builder().success(true).message("Order confirmed successfully").data(getOrders(order)).build();
     }
