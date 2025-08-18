@@ -7,6 +7,8 @@ import uz.husan.ordermanagment.dto.meal.MealAddDTO;
 
 @RequestMapping("/chicken")
 public interface ChickenController {
+        @GetMapping("/users")
+        ResponseEntity<?> getAllUsers(@RequestParam Integer page, @RequestParam Integer size);
         @GetMapping("/all")
         ResponseEntity<?> getAllChickens(@RequestParam Integer page, @RequestParam Integer size);
         @PostMapping("/create")
