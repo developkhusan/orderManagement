@@ -1,15 +1,15 @@
 ######################################
 ### Add Chicken
 ######################################
-POST http://localhost:8080/chicken
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+POST http://localhost:8080/chicken/create
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
 Content-Type: application/json
 
 {
   "chickenName": "Happy Chicken",
   "chickenLocation": "Tashkent, Uzbekistan",
   "phoneNumber": "+998901234567",
-  "ownerId": 1,
+  "ownerId": 5,
   "imageUrl": "http://example.com/chicken-image.jpg"
 }
 
@@ -17,14 +17,14 @@ Content-Type: application/json
 ####### get all chickens #######
 #####################################
 
-GET http://localhost:8080/chicken?page=1&size=10
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
+GET http://localhost:8080/chicken/all?page=1&size=10
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
 
 ##################################
 ### Put Chicken
 ### Update Chicken by ID
 ##################################
-PUT http://localhost:8080/chicken?mealId=1
+PUT http://localhost:8080/chicken/update?mealId=1
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8
 Content-Type: application/json
 
@@ -40,5 +40,5 @@ Content-Type: application/json
 ### Delete Chicken
 ### Delete Chicken by ID
 ##################################
-DELETE http://localhost:8080/chicken?id=1
+DELETE http://localhost:8080/chicken/delete?id=1
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU1MTc3MjMzfQ.cgjv5S-76IYNK89l3GfIOxPLWCQ4vUqtjQ023lWrKo8

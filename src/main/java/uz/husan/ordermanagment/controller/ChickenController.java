@@ -7,12 +7,12 @@ import uz.husan.ordermanagment.dto.meal.MealAddDTO;
 
 @RequestMapping("/chicken")
 public interface ChickenController {
-        @GetMapping
+        @GetMapping("/all")
         ResponseEntity<?> getAllChickens(@RequestParam Integer page, @RequestParam Integer size);
-        @PostMapping
+        @PostMapping("/create")
         ResponseEntity<?> createChicken(@RequestBody ChickenAddDTO chickenAddDTO);
-        @PutMapping
+        @PutMapping("/update")
         ResponseEntity<?> updateChicken(@RequestParam Long chickenId,@RequestBody ChickenAddDTO chickenAddDTO);
-        @DeleteMapping
+        @DeleteMapping("/delete")
         ResponseEntity<?> deleteChicken(@RequestParam Long id);
 }

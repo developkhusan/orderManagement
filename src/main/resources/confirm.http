@@ -1,0 +1,9 @@
+##################/orders-delivered
+GET http://localhost:8080/order/orders-delivered
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDkyMjI2fQ.IpWaIqfEKfmwt1gGHdEsGQk-DXaBwU__Qt1wbdKiFOI
+
+#########################################
+
+
+GET http://localhost:8080/order/confirmation-order?orderId=1
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDkyMjI2fQ.IpWaIqfEKfmwt1gGHdEsGQk-DXaBwU__Qt1wbdKiFOI

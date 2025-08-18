@@ -3,8 +3,8 @@ POST http://localhost:8080/auth/signup
 Content-Type: application/json
 
 {
-  "fullName": "Husan Choriyev",
-  "email": "choriyevhusan74@gmail.com",
+  "fullName": "Husan ",
+  "email": "developkhusan@gmail.com",
   "password": "root123",
   "phoneNumber": "+998901234567"
 }
