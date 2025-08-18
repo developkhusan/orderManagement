@@ -9,6 +9,7 @@ public class OrdersShowDTO{
     private Long id;
     private String clientName;
     private OrderStatus status;
+    private String location;
     private BigDecimal totalAmount;
     private String orderDateTime;
 }

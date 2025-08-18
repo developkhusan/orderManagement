@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.Mapping;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -17,5 +18,6 @@ public class Chicken extends AbsEntity{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     private User owner;
+    private BigDecimal balance;
     private String imageUrl;
 }

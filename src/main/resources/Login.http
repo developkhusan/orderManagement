@@ -14,7 +14,7 @@ POST http://localhost:8080/auth/signin
 Content-Type: application/json
 
 {
-  "email": "developkhusan@gmail.com",
+  "email": "choriyevhusan74@gmail.com",
   "password": "root123"
 }
 

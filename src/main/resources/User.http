@@ -4,8 +4,6 @@
 
 GET http://localhost:8080/chicken/all?page=1&size=10
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac
-
-
 ###
 #########################################
 ### Get Chicken by ID
@@ -14,7 +12,6 @@ GET http://localhost:8080/order/get-list?page=1&size=10&chickenId=1
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac
 
 ###
-
 POST http://localhost:8080/order/create
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac
 Content-Type: application/json
@@ -24,8 +21,6 @@ Content-Type: application/json
   "quantity": 1
 
 }
-
 ###
 GET http://localhost:8080/order/buy
 Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac
-Content-Type: application/json

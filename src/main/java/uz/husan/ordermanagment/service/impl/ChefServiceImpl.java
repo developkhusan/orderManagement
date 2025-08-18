@@ -6,10 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.husan.ordermanagment.dto.orders.OrdersShowDTO;
 import uz.husan.ordermanagment.entity.Order;
+import uz.husan.ordermanagment.entity.OrderItem;
 import uz.husan.ordermanagment.entity.User;
 import uz.husan.ordermanagment.entity.enums.OrderStatus;
 import uz.husan.ordermanagment.entity.enums.Role;
 import uz.husan.ordermanagment.message.ResponseMessage;
+import uz.husan.ordermanagment.repository.ChickenRepository;
 import uz.husan.ordermanagment.repository.OrderRepository;
 import uz.husan.ordermanagment.repository.UserRepository;
 import uz.husan.ordermanagment.service.ChefService;
@@ -20,12 +22,14 @@ import java.util.Optional;
 public class ChefServiceImpl implements ChefService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final ChickenRepository chickenRepository;
 
     public OrdersShowDTO getOrders(Order order) {
        OrdersShowDTO ordersShowDTO = new OrdersShowDTO();
         ordersShowDTO.setId(order.getId());
         ordersShowDTO.setClientName(order.getClient().getFullName());
         ordersShowDTO.setStatus(order.getStatus());
+        ordersShowDTO.setLocation(order.getClient().getUserLocation());
         ordersShowDTO.setTotalAmount(order.getTotalAmount());
         ordersShowDTO.setOrderDateTime(order.getOrderDateTime().toString());
         return ordersShowDTO;
@@ -60,12 +64,17 @@ public class ChefServiceImpl implements ChefService {
             return ResponseMessage.builder().success(false).message("Order not found").data(null).build();
         }
         Order order = orderOptional.get();
+        OrderItem orderItem = order.getOrderItems().get(0);
+        orderItem.getMeal().getChicken().setBalance(orderItem.getMeal().getChicken().getBalance().add(deliverer.getBalance()));
         if (deliverer.getBalance().compareTo(order.getTotalAmount()) < 0) {
             return ResponseMessage.builder().success(false).message("Deliverer not enough").data(null).build();
         }
         if (order.getStatus() != OrderStatus.READY) {
             return ResponseMessage.builder().success(false).message("Order is not in Ready status").data(null).build();
         }
+        deliverer.setBalance(deliverer.getBalance().subtract(order.getTotalAmount()));
+        orderItem.getMeal().getChicken().setBalance(orderItem.getMeal().getChicken().getBalance().add(order.getTotalAmount()));
+        chickenRepository.save(orderItem.getMeal().getChicken());
         deliverer.setBusy(true);
         order.setStatus(OrderStatus.SHIPPED);
         order.setDeliverer(deliverer);

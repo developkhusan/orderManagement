@@ -39,8 +39,8 @@ public class MyFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (authorization.startsWith("Bearer {")) {
-            authorization = authorization.substring(8);
+        if (authorization.startsWith("Bearer ")) {
+            authorization = authorization.substring(7);
             if (!jwtService.isValid(authorization)){
                 doFilter(request,response,filterChain);
                 return;

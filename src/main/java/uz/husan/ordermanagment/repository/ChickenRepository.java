@@ -7,4 +7,3 @@ import uz.husan.ordermanagment.entity.Chicken;
 public interface ChickenRepository extends JpaRepository<Chicken, Long> {
 
 }
-

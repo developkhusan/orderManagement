@@ -163,6 +163,13 @@ public class OrderIteamServiceImpl implements OrderIteamService {
                     .build();
         }
         Order order = byClientId.get();
+        if(user.getBalance().compareTo(order.getTotalAmount())<0){
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Not enough balance")
+                    .data(null)
+                    .build();
+        }
         order.setStatus(OrderStatus.READY);
         orderRepository.save(order);
 
@@ -204,6 +211,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         if (byId.get().getStatus().equals(OrderStatus.DELIVERED)){
             Order order = byId.get();
             order.setStatus(OrderStatus.CONFIRMED);
+            order.setDeliveryDate(LocalDateTime.now());
             user.setBalance(user.getBalance().subtract(order.getTotalAmount())); // balansidan buyurtma summasini chiqarish
             order.getDeliverer().setBalance(order.getDeliverer().getBalance().add(order.getTotalAmount()));
             /// pulni kimga tashlay
