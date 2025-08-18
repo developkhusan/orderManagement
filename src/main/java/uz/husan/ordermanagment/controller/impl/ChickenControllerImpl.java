@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import uz.husan.ordermanagment.controller.ChickenController;
 import uz.husan.ordermanagment.dto.chicken.ChickenAddDTO;
-import uz.husan.ordermanagment.dto.meal.MealAddDTO;
 import uz.husan.ordermanagment.message.ResponseMessage;
 import uz.husan.ordermanagment.service.ChickenService;
 
@@ -13,6 +12,13 @@ import uz.husan.ordermanagment.service.ChickenService;
 @RequiredArgsConstructor
 public class ChickenControllerImpl implements ChickenController {
     private final ChickenService chickenService;
+
+    @Override
+    public ResponseEntity<?> getAllUsers(Integer page, Integer size) {
+        ResponseMessage responseMessage = chickenService.getAllUsers(page, size);
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
     @Override
     public ResponseEntity<?> getAllChickens(Integer page, Integer size) {
         ResponseMessage responseMessage = chickenService.getAllChickens(page, size);
