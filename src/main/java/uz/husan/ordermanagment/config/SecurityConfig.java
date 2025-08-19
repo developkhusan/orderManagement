@@ -31,11 +31,12 @@ public class SecurityConfig {
                                         "/auth/**",
                                         "/order/**",
                                         "/chef/**",
+                                        "/user/**",
                                         "/swagger-ui/**",
                                         "/v3/**",
                                         "/webjars/**",
                                         "/swagger-ui.html").permitAll()
-                                    .requestMatchers("/chicken/create,/meal/create").hasRole("ADMIN")
+                                    .requestMatchers("/chicken/create,/chicken/update,/meal/create,meal/update").hasRole("ADMIN")
                                     .anyRequest()
                                 .authenticated()
                 )
