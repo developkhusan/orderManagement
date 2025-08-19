@@ -25,4 +25,5 @@ api:
 jwt:
   secret: my-secret-key-for-jwt-please-do-not
   expire-time: 864 000 000 # 10 DAY in milliseconds
-
+server:
+  port: 8080

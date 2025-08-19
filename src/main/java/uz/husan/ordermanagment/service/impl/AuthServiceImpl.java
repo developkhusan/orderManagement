@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
                         .data("00i8hut348r403t-9ru2fc2ew0ce2djc==")
                         .build();
         }
-         User user = new User();
+        User user = new User();
         user.setFullName(userDTORequest.getFullName());
         user.setEmail(userDTORequest.getEmail());
         String s = new String(Base64.getEncoder().encode(userDTORequest.getEmail().getBytes()));
@@ -72,6 +72,10 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(Role.USER);
         user.setBalance(new BigDecimal(0.0));
         user.setBusy(false);
+        user.setUserLocation(userDTORequest.getUserLocation());
+        user.setImageUrl(userDTORequest.getImageUrl());
+        user.setPhoneNumber(userDTORequest.getPhoneNumber());
+
         String code = generateCode();
         user.setConfCode(code);
         userRepository.save(user);

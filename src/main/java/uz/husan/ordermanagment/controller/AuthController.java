@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.*;
 import uz.husan.ordermanagment.dto.auth.EmailAndPasswordDTO;
 import uz.husan.ordermanagment.dto.auth.UserRequestDTO;
 
+import java.math.BigDecimal;
+
 @RequestMapping("/auth")
 public interface AuthController {
+
      @PostMapping("/signup")
      ResponseEntity<?> signup(@RequestBody UserRequestDTO userRequestDTO);
 

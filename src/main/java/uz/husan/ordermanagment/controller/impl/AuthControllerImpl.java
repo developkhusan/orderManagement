@@ -9,10 +9,13 @@ import uz.husan.ordermanagment.dto.auth.UserRequestDTO;
 import uz.husan.ordermanagment.message.ResponseMessage;
 import uz.husan.ordermanagment.service.AuthService;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthControllerImpl implements AuthController {
     private final AuthService authService;
+
     @Override
     public ResponseEntity<?> signup(UserRequestDTO userRequestDTO) {
         ResponseMessage signupResponse = authService.signup(userRequestDTO);

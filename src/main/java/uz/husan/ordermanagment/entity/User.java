@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User extends AbsEntity implements UserDetails {
+    private String imageUrl;
     private String fullName;
     private String email;
     private String password;
