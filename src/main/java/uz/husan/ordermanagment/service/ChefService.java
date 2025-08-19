@@ -10,7 +10,7 @@ import uz.husan.ordermanagment.message.ResponseMessage;
 @Service
 public interface ChefService {
     ResponseMessage getAllOrders(Integer page,  Integer size);
-    ResponseMessage confirmOrder(Long orderId, Long deliverId);
-    ResponseMessage getAllDeliverers(Integer page,  Integer size);
-
+    ResponseMessage confirmOrder(Long orderId);
+    ResponseMessage preparationOrder(Long orderId);
+    ResponseMessage readyOrder(Long orderId);
 }

@@ -31,6 +31,7 @@ public class SecurityConfig {
                                         "/auth/**",
                                         "/order/**",
                                         "/chef/**",
+                                        "/deliverer/**",
                                         "/user/**",
                                         "/swagger-ui/**",
                                         "/v3/**",

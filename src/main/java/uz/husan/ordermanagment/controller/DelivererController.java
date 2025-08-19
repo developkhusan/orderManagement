@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/deliverer")
 public interface DelivererController {
-    @GetMapping("/my-order")
-    ResponseEntity<?> getAllMyOrders();
-    @PutMapping("/my-shipped-deliver")
-    ResponseEntity<?> orderDeliver(@RequestParam Long orderId, @RequestParam Long deliverId);
+    @GetMapping("/all-ready-order")
+    ResponseEntity<?> getAllOrders(@RequestParam Integer page, @RequestParam Integer size);
+    @PutMapping("/delivered-order")
+    ResponseEntity<?> deliveredOrder(@RequestParam Long orderId);
+    @PutMapping("/take-to-deliver")
+    ResponseEntity<?> takeToDeliver(@RequestParam Long orderId);
 
 }

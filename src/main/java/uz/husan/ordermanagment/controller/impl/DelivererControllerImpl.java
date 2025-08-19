@@ -13,14 +13,22 @@ public class DelivererControllerImpl implements DelivererController {
     private final DelivererService delivererService;
 
     @Override
-    public ResponseEntity<?> getAllMyOrders() {
-        ResponseMessage responseMessage = delivererService.getAllMyOrders();
+    public ResponseEntity<?> getAllOrders(Integer page, Integer size) {
+        ResponseMessage responseMessage = delivererService.getAllOrders(page, size);
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
 
     @Override
-    public ResponseEntity<?> orderDeliver(Long orderId, Long deliverId) {
-        ResponseMessage responseMessage = delivererService.orderDeliver(orderId, deliverId);
+    public ResponseEntity<?> deliveredOrder(Long orderId) {
+        ResponseMessage responseMessage = delivererService.deliveredOrder(orderId);
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
+
+    @Override
+    public ResponseEntity<?> takeToDeliver(Long orderId) {
+        ResponseMessage responseMessage = delivererService.takeToDeliver(orderId);
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+
 }

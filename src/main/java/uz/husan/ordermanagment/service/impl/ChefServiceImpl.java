@@ -3,6 +3,7 @@ package uz.husan.ordermanagment.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uz.husan.ordermanagment.dto.orders.OrdersShowDTO;
 import uz.husan.ordermanagment.entity.Chicken;
@@ -39,7 +40,7 @@ public class ChefServiceImpl implements ChefService {
     @Override
     public ResponseMessage getAllOrders(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page - 1, size);
-        Page<OrdersShowDTO> all = orderRepository.findByStatus(OrderStatus.READY,pageRequest).map(this::getOrders );
+        Page<OrdersShowDTO> all = orderRepository.findByStatus(OrderStatus.PENDING,pageRequest).map(this::getOrders );
         if (all.isEmpty()){
             return ResponseMessage.builder().success(false).message("Order no such exists").data(null).build();
         }
@@ -52,58 +53,85 @@ public class ChefServiceImpl implements ChefService {
     }
 
     @Override
-    public ResponseMessage confirmOrder(Long orderId, Long deliverId) {
-        Optional<User> delivererOptional = userRepository.findById(deliverId);
-        if (delivererOptional.isEmpty()) {
-            return ResponseMessage.builder().success(false).message("Deliverer not found").data(null).build();
+    public ResponseMessage confirmOrder(Long orderId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.getRole().equals(Role.CHEF)) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You are not authorized to confirm orders")
+                    .data(null)
+                    .build();
         }
-        if(delivererOptional.get().getBusy()) {
-            return ResponseMessage.builder().success(false).message("Deliverer is busy").data(null).build();
-        }
-        User deliverer = delivererOptional.get();
+
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (orderOptional.isEmpty()) {
             return ResponseMessage.builder().success(false).message("Order not found").data(null).build();
         }
         Order order = orderOptional.get();
-        Chicken chicken = order.getOrderItems().stream()
-                .findFirst()
-                .map(orderItem -> orderItem.getMeal().getChicken())
-                .orElse(null);
-
-
-        System.out.println(chicken);
-        chicken.setBalance(chicken.getBalance().add(order.getTotalAmount()));
-        if (deliverer.getBalance().compareTo(order.getTotalAmount()) < 0) {
-            return ResponseMessage.builder().success(false).message("Deliverer not enough").data(null).build();
+        if (order.getStatus() == OrderStatus.READY) {
+            return ResponseMessage.builder().success(false).message("Order is already ready").data(getOrders(order)).build();
         }
-        if (order.getStatus() != OrderStatus.READY) {
-            return ResponseMessage.builder().success(false).message("Order is not in Ready status").data(null).build();
+        if (order.getStatus() == OrderStatus.SENT) {
+            return ResponseMessage.builder().success(false).message("Order is already sent").data(getOrders(order)).build();
         }
-        deliverer.setBalance(deliverer.getBalance().subtract(order.getTotalAmount()));
-        chicken.setBalance(chicken.getBalance().add(order.getTotalAmount()));
-        chickenRepository.save(chicken);
-        System.out.println(chicken.getChickenName());
-        deliverer.setBusy(true);
-        order.setStatus(OrderStatus.SHIPPED);
-        order.setDeliverer(deliverer);
-        orderRepository.save(order);
-        return ResponseMessage.builder().success(true).message("Order confirmed successfully").data(getOrders(order)).build();
+        if (order.getStatus() == OrderStatus.PREPARATION) {
+            return ResponseMessage.builder().success(false).message("Order is already in preparation").data(getOrders(order)).build();
+        }
+        if (order.getStatus() == OrderStatus.PENDING) {
+            order.setStatus(OrderStatus.CONFIRMED);
+            orderRepository.save(order);
+            return ResponseMessage.builder().success(true).message("Order confirmed successfully").data(getOrders(order)).build();
+        }
+        return ResponseMessage.builder().success(false).message("Order status is not valid for confirmation").data(getOrders(order)).build();
     }
 
     @Override
-    public ResponseMessage getAllDeliverers(Integer page, Integer size) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size);
-        Page<User> all = userRepository.findByRole(Role.DELIVERY, pageRequest);
-        if (all.isEmpty()) {
-            return ResponseMessage.builder().success(false).message("Deliverers not found").data(null).build();
+    public ResponseMessage preparationOrder(Long orderId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.getRole().equals(Role.CHEF)) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You are not authorized to prepare orders")
+                    .data(null)
+                    .build();
         }
-        return ResponseMessage
-                .builder()
-                .message("Deliverers fetched successfully")
-                .success(true)
-                .data(all)
-                .build();
+
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isEmpty()) {
+            return ResponseMessage.builder().success(false).message("Order not found").data(null).build();
+        }
+        Order order = orderOptional.get();
+        if (order.getStatus() != OrderStatus.CONFIRMED) {
+            return ResponseMessage.builder().success(false).message("Order is not in Confirmed status").data(getOrders(order)).build();
+        }
+        order.setStatus(OrderStatus.PREPARATION);
+        orderRepository.save(order);
+        return ResponseMessage.builder().success(true).message("Order is now in preparation").data(getOrders(order)).build();
     }
+
+    @Override
+    public ResponseMessage readyOrder(Long orderId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.getRole().equals(Role.CHEF)) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You are not authorized to mark orders as ready")
+                    .data(null)
+                    .build();
+        }
+
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isEmpty()) {
+            return ResponseMessage.builder().success(false).message("Order not found").data(null).build();
+        }
+        Order order = orderOptional.get();
+        if (order.getStatus() != OrderStatus.PREPARATION) {
+            return ResponseMessage.builder().success(false).message("Order is not in Preparation status").data(getOrders(order)).build();
+        }
+        order.setStatus(OrderStatus.READY);
+        orderRepository.save(order);
+        return ResponseMessage.builder().success(true).message("Order is now ready").data(getOrders(order)).build();
+    }
+
 
 }

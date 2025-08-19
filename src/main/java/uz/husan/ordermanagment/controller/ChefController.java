@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ChefController{
     @GetMapping("/orders")
     ResponseEntity<?> getAllOrders(@RequestParam Integer page, @RequestParam Integer size);
-    @GetMapping("/deliverers")
-    ResponseEntity<?> getAllDeliverers(@RequestParam Integer page, @RequestParam Integer size);
     @PutMapping("/confirm-order")
-    ResponseEntity<?> confirmOrder(@RequestParam Long orderId, @RequestParam Long deliverId);
+    ResponseEntity<?> confirmOrder(@RequestParam Long orderId);
+    @PutMapping("/preparation-order")
+    ResponseEntity<?> preparationOrder(@RequestParam Long orderId);
+    @PutMapping("/ready-order")
+    ResponseEntity<?> readyOrder(@RequestParam Long orderId);
 
 }

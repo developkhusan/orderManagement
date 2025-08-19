@@ -8,6 +8,7 @@ import uz.husan.ordermanagment.message.ResponseMessage;
 
 @Service
 public interface DelivererService {
-    ResponseMessage getAllMyOrders();
-    ResponseMessage orderDeliver( Long orderId,  Long deliverId);
+    ResponseMessage getAllOrders(Integer page, Integer size);
+    ResponseMessage deliveredOrder( Long orderId);
+    ResponseMessage takeToDeliver( Long orderId);
 }
