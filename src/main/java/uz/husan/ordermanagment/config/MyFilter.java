@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Optional;
 @Component
 public class MyFilter extends OncePerRequestFilter {
-   @Autowired
+    @Autowired
     @Lazy
     UserDetailsService userDetailsService;
     @Autowired

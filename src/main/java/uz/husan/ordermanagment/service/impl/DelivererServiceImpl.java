@@ -28,7 +28,7 @@ public class DelivererServiceImpl implements DelivererService {
                     .data(null)
                     .build();
         }
-        Optional<Order> byClientIdAndStatus = orderRepository.findByDelivererIdAndStatus(user.getId(), OrderStatus.SHIPPED);
+        Optional<Order> byClientIdAndStatus = orderRepository.findByDelivererIdAndStatus(user.getId(), OrderStatus.SENT);
         if (byClientIdAndStatus.isEmpty()) {
             return ResponseMessage.builder()
                     .success(false)
@@ -65,7 +65,7 @@ public class DelivererServiceImpl implements DelivererService {
         }
 
         Order order = orderOptional.get();
-        if (!order.getStatus().equals(OrderStatus.SHIPPED)) {
+        if (!order.getStatus().equals(OrderStatus.SENT)) {
             return ResponseMessage.builder()
                     .success(false)
                     .message("Order is not in a deliverable state")
