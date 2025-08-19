@@ -6,19 +6,38 @@ import uz.husan.ordermanagment.dto.orderItem.OrderItemAddDTO;
 
 @RequestMapping("/order")
 public interface OrderController {
-    @GetMapping("/get-list")
+    @GetMapping("/restaurant-meal-list")
     ResponseEntity<?> getAllOrders(@RequestParam Integer page, @RequestParam Integer size, @RequestParam Long chickenId);
-    @PostMapping("/create")
+
+    @PostMapping("/give-orders")
     ResponseEntity<?> createOrder(@RequestBody OrderItemAddDTO orderAddDTO);
-    @PutMapping("/update")
-    ResponseEntity<?> updateOrder(@RequestParam Long mealId,@RequestBody OrderItemAddDTO orderAddDTO);
-    @DeleteMapping("/delete")
-    ResponseEntity<?> deleteOrder(@RequestParam Long id);
-    @GetMapping("/buy")
+
+
+    @GetMapping("/basket-buy")
     ResponseEntity<?> buyOrder();
-    @GetMapping("/orders-delivered")
+
+    @GetMapping("/my-history")
     ResponseEntity<?> ordersDelivered();
+
     @GetMapping("/confirmation-order")
     ResponseEntity<?> orderConfirmation(@RequestParam Long orderId);
+
+    @GetMapping("/my-current-basket")
+    ResponseEntity<?> currentBasket();
+
+    @PostMapping("/cancel-basket")
+    ResponseEntity<?> cancelBasket();
+
+    @DeleteMapping("/basket-item")
+    ResponseEntity<?> deleteBasketItem(@RequestParam Long orderItemId);
+
+    @PutMapping("/basket-iteam-quantity")
+    ResponseEntity<?> updateBasketItemQuantity(@RequestParam Long orderItemId, @RequestParam Integer quantity);
+
+    @GetMapping("/my-active-orders")
+    ResponseEntity<?> getActiveOrdersForConfirmation();
+
+
+
 
 }

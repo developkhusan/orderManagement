@@ -6,8 +6,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uz.husan.ordermanagment.dto.meal.MealShowDTO;
+import uz.husan.ordermanagment.dto.orderItem.BasketShowDTO;
 import uz.husan.ordermanagment.dto.orderItem.OrderIteamShowDTO;
 import uz.husan.ordermanagment.dto.orderItem.OrderItemAddDTO;
+import uz.husan.ordermanagment.dto.orderItem.OrderShowDTO;
 import uz.husan.ordermanagment.entity.Meal;
 import uz.husan.ordermanagment.entity.Order;
 import uz.husan.ordermanagment.entity.OrderItem;
@@ -40,7 +42,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
 
         OrderIteamShowDTO orderIteamShowDTO = new OrderIteamShowDTO();
         orderIteamShowDTO.setId(orderItem.getId());
-        orderIteamShowDTO.setOrderId(orderItem.getId());
+        orderIteamShowDTO.setOrderId(orderItem.getOrder().getId());
 
         Optional<Meal> byMealId = mealRepository.findById(orderItem.getMeal().getId());
 
@@ -89,7 +91,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
     public ResponseMessage createOrder(OrderItemAddDTO orderAddDTO) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.PENDING);
+        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.DEFAULT);
         Optional<Meal> byMealId = mealRepository.findById(orderAddDTO.getMealId());
 
         if(byMealId.isEmpty()){
@@ -100,7 +102,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         if(byClientId.isEmpty()){
             order = new Order();
             order.setClient(user);
-            order.setStatus(OrderStatus.PENDING);
+            order.setStatus(OrderStatus.DEFAULT);
             order.setTotalAmount(BigDecimal.ZERO);
             order.setOrderDateTime(LocalDateTime.now());
             order.setOrderItems(new ArrayList<>());
@@ -124,7 +126,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         //Orderlarga qoshib qoyish
         List<OrderItem> orderItems = order.getOrderItems();
         orderItems.add(orderItem);
-        order.setTotalAmount(order.getTotalAmount().add(orderItem.getMeal().getPrice()));
+        order.setTotalAmount(order.getTotalAmount().add(orderItem.getTotalPrice()));
         OrderItem save = orderItemRepository.save(orderItem);
 
 
@@ -140,20 +142,11 @@ public class OrderIteamServiceImpl implements OrderIteamService {
 
     }
 
-    @Override
-    public ResponseMessage updateOrder(Long id, OrderItemAddDTO productDTO) {
-        return null;
-    }
-
-    @Override
-    public ResponseMessage deleteOrder(Long id) {
-        return null;
-    }
 
     @Override
     public ResponseMessage buyOrder() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(),OrderStatus.PENDING);
+        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(),OrderStatus.DEFAULT);
 
         if(byClientId.isEmpty()){
             return ResponseMessage.builder()
@@ -170,7 +163,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
                     .data(null)
                     .build();
         }
-        order.setStatus(OrderStatus.READY);
+        order.setStatus(OrderStatus.PENDING);
         orderRepository.save(order);
 
 
@@ -184,22 +177,32 @@ public class OrderIteamServiceImpl implements OrderIteamService {
     }
 
     @Override
-    public ResponseMessage ordersDelivered() {
+    public ResponseMessage getOrderHistory() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Order> allClientIdAndStatus = orderRepository.findAllClientIdAndStatus(user.getId(), OrderStatus.DELIVERED);
 
-        if (allClientIdAndStatus.isEmpty()){
-            return ResponseMessage.builder().success(false).message("Cards no such exists").data(null).build();
+        // Faqat tarix bo‘lishi mumkin bo‘lgan statuslar
+        List<OrderStatus> historyStatuses = List.of(
+                OrderStatus.ACCEPTED,
+                OrderStatus.CLIENT_CANCELLED
+        );
 
+        List<Order> orders = orderRepository.findAllByClientIdAndStatusIn(user.getId(), historyStatuses);
+
+        if (orders.isEmpty()) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You don't have any order history")
+                    .data(null)
+                    .build();
         }
-        return ResponseMessage
-                .builder()
-                .message("All orders delivered successfully")
-                .success(true)
-                .data(allClientIdAndStatus)
-                .build();
 
+        return ResponseMessage.builder()
+                .success(true)
+                .message("Order history fetched successfully")
+                .data(orders)
+                .build();
     }
+
 
     @Override
     public ResponseMessage orderConfirmation(Long orderId) {
@@ -210,7 +213,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (byId.get().getStatus().equals(OrderStatus.DELIVERED)){
             Order order = byId.get();
-            order.setStatus(OrderStatus.CONFIRMED);
+            order.setStatus(OrderStatus.ACCEPTED);
             order.setDeliveryDate(LocalDateTime.now());
             user.setBalance(user.getBalance().subtract(order.getTotalAmount())); // balansidan buyurtma summasini chiqarish
             order.getDeliverer().setBalance(order.getDeliverer().getBalance().add(order.getTotalAmount()));
@@ -224,4 +227,192 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         return ResponseMessage.builder().success(false).message(" Delivered order not found").data(null).build();
 
     }
+
+
+    @Override
+    public ResponseMessage showCurrentBasket() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.DEFAULT);
+
+        if (byClientId.isEmpty()) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Your basket is empty")
+                    .data(null)
+                    .build();
+        }
+
+        Order order = byClientId.get();
+
+        // orderItem larni DTO ga map qilish
+        List<OrderIteamShowDTO> items = order.getOrderItems().stream()
+                .map(this::getOrderItem)
+                .toList();
+
+        BasketShowDTO dto = new BasketShowDTO(
+                order.getId(),
+                order.getTotalAmount(),
+                items
+        );
+
+        return ResponseMessage.builder()
+                .success(true)
+                .message("Your current basket")
+                .data(dto)
+                .build();
+    }
+
+    @Override
+    public ResponseMessage cancelBasket() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.PENDING);
+
+        if (byClientId.isEmpty()) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You don't have any pending basket to cancel")
+                    .data(null)
+                    .build();
+        }
+
+        Order order = byClientId.get();
+        order.setStatus(OrderStatus.CLIENT_CANCELLED);
+        order.setDeliveryDate(LocalDateTime.now()); // bekor qilingan vaqtni belgilab qo‘yish mumkin
+        orderRepository.save(order);
+
+        return ResponseMessage.builder()
+                .success(true)
+                .message("Basket cancelled successfully")
+                .data(order.getId())
+                .build();
+    }
+    @Override
+    public ResponseMessage deleteOrderItem(Long orderItemId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Order> activeBasketOpt = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.DEFAULT);
+
+        if (activeBasketOpt.isEmpty()) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Active basket not found")
+                    .build();
+        }
+
+        Order activeBasket = activeBasketOpt.get();
+
+        Optional<OrderItem> orderItemOpt = activeBasket.getOrderItems()
+                .stream()
+                .filter(item -> item.getId().equals(orderItemId))
+                .findFirst();
+
+        if (orderItemOpt.isEmpty()) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Item not found in your basket")
+                    .build();
+        }
+
+        OrderItem orderItem = orderItemOpt.get();
+
+        activeBasket.setTotalAmount(
+                activeBasket.getTotalAmount().subtract(orderItem.getTotalPrice())
+        );
+
+        activeBasket.getOrderItems().remove(orderItem);
+        orderItemRepository.delete(orderItem);
+        orderRepository.save(activeBasket);
+
+        return ResponseMessage.builder()
+                .success(true)
+                .message("Item deleted successfully")
+                .data(activeBasket.getId())
+                .build();
+    }
+
+
+    @Override
+    public ResponseMessage updateOrderItem(Long orderItemId, Integer newQuantity) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Order> activeOrderOpt = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.DEFAULT);
+
+        if (activeOrderOpt.isEmpty()) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Active basket not found")
+                    .build();
+        }
+
+        Order activeOrder = activeOrderOpt.get();
+        Optional<OrderItem> orderItemOpt = orderItemRepository.findById(orderItemId);
+
+        if (orderItemOpt.isEmpty() || !orderItemOpt.get().getOrder().getId().equals(activeOrder.getId())) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Order item not found in your active basket")
+                    .build();
+        }
+
+        OrderItem orderItem = orderItemOpt.get();
+
+        if (newQuantity <= 0) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Quantity must be greater than zero")
+                    .build();
+        }
+
+        activeOrder.setTotalAmount(activeOrder.getTotalAmount().subtract(orderItem.getTotalPrice()));
+
+        orderItem.setQuantity(newQuantity);
+        orderItem.setTotalPrice(orderItem.getUnitPrice().multiply(BigDecimal.valueOf(newQuantity)));
+
+        activeOrder.setTotalAmount(activeOrder.getTotalAmount().add(orderItem.getTotalPrice()));
+
+        orderItemRepository.save(orderItem);
+        orderRepository.save(activeOrder);
+
+        return ResponseMessage.builder()
+                .success(true)
+                .message("Item updated successfully")
+                .data(orderItem)
+                .build();
+    }
+
+    @Override
+    public ResponseMessage getActiveOrdersForConfirmation() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // faqat PENDING, DELIVERED, ACCEPTED statuslarni olib kelamiz
+        List<OrderStatus> statuses = List.of(OrderStatus.PENDING, OrderStatus.DELIVERED, OrderStatus.CONFIRMED, OrderStatus.SENT,OrderStatus.READY);
+
+        List<Order> orders = orderRepository.findAllByClientIdAndStatusIn(user.getId(), statuses);
+
+        if (orders.isEmpty()) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You don't have any active orders to confirm")
+                    .data(null)
+                    .build();
+        }
+
+        List<OrderShowDTO> orderDTOs = orders.stream()
+                .map(order -> new OrderShowDTO(
+                        order.getId(),
+                        order.getClient().getFullName(),
+                        order.getStatus(),
+                        order.getTotalAmount(),
+                        order.getDeliveryDate()
+                ))
+                .toList();
+
+        return ResponseMessage.builder()
+                .success(true)
+                .message("Active orders for confirmation")
+                .data(orderDTOs)
+                .build();
+    }
+
+
 }

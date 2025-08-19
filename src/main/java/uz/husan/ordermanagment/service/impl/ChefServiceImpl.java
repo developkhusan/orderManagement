@@ -85,7 +85,7 @@ public class ChefServiceImpl implements ChefService {
         chickenRepository.save(chicken);
         System.out.println(chicken.getChickenName());
         deliverer.setBusy(true);
-        order.setStatus(OrderStatus.SHIPPED);
+        order.setStatus(OrderStatus.SENT);
         order.setDeliverer(deliverer);
         orderRepository.save(order);
         return ResponseMessage.builder().success(true).message("Order confirmed successfully").data(getOrders(order)).build();

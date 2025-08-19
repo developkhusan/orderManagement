@@ -26,24 +26,46 @@ public class OrderControllerImpl implements OrderController {
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
 
-    @Override
-    public ResponseEntity<?> updateOrder(Long orderId, OrderItemAddDTO orderAddDTO) {
-        return null;
-    }
 
     @Override
-    public ResponseEntity<?> deleteOrder(Long id) {
-        return null;
-    }
-    @Override
     public ResponseEntity<?> ordersDelivered() {
-        ResponseMessage responseMessage = orderIteamService.ordersDelivered();
+        ResponseMessage responseMessage = orderIteamService.getOrderHistory();
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
 
     @Override
     public ResponseEntity<?> orderConfirmation(Long orderId) {
         ResponseMessage responseMessage = orderIteamService.orderConfirmation(orderId);
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+    @Override
+    public ResponseEntity<?> currentBasket() {
+       ResponseMessage responseMessage = orderIteamService.showCurrentBasket();
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+    @Override
+    public ResponseEntity<?> cancelBasket() {
+        ResponseMessage responseMessage = orderIteamService.cancelBasket();
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteBasketItem(Long orderItemId) {
+        ResponseMessage responseMessage = orderIteamService.deleteOrderItem(orderItemId);
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+    @Override
+    public ResponseEntity<?> updateBasketItemQuantity(Long orderItemId, Integer quantity) {
+        ResponseMessage responseMessage = orderIteamService.updateOrderItem(orderItemId, quantity);
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+    @Override
+    public ResponseEntity<?> getActiveOrdersForConfirmation() {
+        ResponseMessage responseMessage = orderIteamService.getActiveOrdersForConfirmation();
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
 
