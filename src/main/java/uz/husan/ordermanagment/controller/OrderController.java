@@ -18,4 +18,9 @@ public interface OrderController {
     @GetMapping("/buy")
     ResponseEntity<?> buyOrder();
 
+    @GetMapping("/orders-delivered")
+    ResponseEntity<?> ordersDelivered();
+
+    @GetMapping("/confirmation-order")
+    ResponseEntity<?> orderConfirmation(@RequestParam Long orderId);
 }

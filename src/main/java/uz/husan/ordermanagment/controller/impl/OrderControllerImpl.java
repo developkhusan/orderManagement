@@ -41,4 +41,16 @@ public class OrderControllerImpl implements OrderController {
         ResponseMessage responseMessage = orderIteamService.buyOrder();
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
+
+    @Override
+    public ResponseEntity<?> ordersDelivered() {
+        ResponseMessage responseMessage = orderIteamService.ordersDelivered();
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+    @Override
+    public ResponseEntity<?> orderConfirmation(Long orderId) {
+        ResponseMessage responseMessage = orderIteamService.orderConfirmation(orderId);
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
 }

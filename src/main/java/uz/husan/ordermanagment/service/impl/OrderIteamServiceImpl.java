@@ -17,6 +17,7 @@ import uz.husan.ordermanagment.message.ResponseMessage;
 import uz.husan.ordermanagment.repository.MealRepository;
 import uz.husan.ordermanagment.repository.OrderItemRepository;
 import uz.husan.ordermanagment.repository.OrderRepository;
+import uz.husan.ordermanagment.repository.UserRepository;
 import uz.husan.ordermanagment.service.OrderIteamService;
 
 import java.math.BigDecimal;
@@ -31,7 +32,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
     private final OrderRepository orderRepository;
     private final MealRepository mealRepository;
     private final OrderItemRepository orderItemRepository;
-
+    private final UserRepository userRepository;
 
 
     public OrderIteamShowDTO getOrderItem(OrderItem orderItem) {
@@ -171,6 +172,50 @@ public class OrderIteamServiceImpl implements OrderIteamService {
                 .message("Wait for the operator's response")
                 .data(byClientId.get())
                 .build();
+
+    }
+
+    @Override
+    public ResponseMessage ordersDelivered() {
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Order> allClientIdAndStatus = orderRepository.findAllClientIdAndStatus(user.getId(), OrderStatus.DELIVERED);
+
+if (allClientIdAndStatus.isEmpty()){
+    return ResponseMessage.builder().success(false).message("Cards no such exists").data(null).build();
+
+}
+        return ResponseMessage
+                .builder()
+                .message("All orders delivered successfully")
+                .success(true)
+                .data(allClientIdAndStatus)
+                .build();
+
+    }
+
+    @Override
+    public ResponseMessage orderConfirmation(Long orderId) {
+        Optional<Order> byId = orderRepository.findById(orderId);
+        if (byId.isEmpty()){
+            return ResponseMessage.builder().success(false).message("Order not found").data(null).build();
+        }
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (byId.get().getStatus().equals(OrderStatus.DELIVERED)){
+            Order order = byId.get();
+            order.setStatus(OrderStatus.CONFIRMED);
+            orderRepository.save(order);
+
+            user.setBalance(user.getBalance()-byId.get().getTotalAmount().doubleValue());
+
+            /// pulni kimga tashlay
+
+            userRepository.save(user);
+
+            return ResponseMessage.builder().success(true).message("Order confirmed successfully").data(byId.get()).build();
+
+        }
+       return ResponseMessage.builder().success(false).message(" Delivered order not found").data(null).build();
 
     }
 }
