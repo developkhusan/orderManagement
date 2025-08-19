@@ -42,6 +42,21 @@ public class ChickenServiceImpl implements ChickenService {
     }
 
     @Override
+    public ResponseMessage getAllUsers(Integer page, Integer size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        Page<User> all = userRepository.findAll(pageRequest);
+        if (all.isEmpty()){
+            return ResponseMessage.builder().success(false).message("user no such exists").data(null).build();
+        }
+        return ResponseMessage
+                .builder()
+                .message("users fetched successfully")
+                .success(true)
+                .data(all)
+                .build();
+    }
+
+    @Override
     public ResponseMessage getAllChickens(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page - 1, size);
         Page<ChickenShowDTO> all = chickenRepository.findAll(pageRequest).map(this::getChicken );

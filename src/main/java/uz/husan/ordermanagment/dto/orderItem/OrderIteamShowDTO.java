@@ -3,6 +3,7 @@ package uz.husan.ordermanagment.dto.orderItem;
 import lombok.Data;
 
 import java.math.BigDecimal;
+
 @Data
 public class OrderIteamShowDTO {
 
@@ -15,14 +16,5 @@ public class OrderIteamShowDTO {
     private BigDecimal totalPrice;
 
 
-/*
-    private Long id;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private String category;
-    private String imageUrl;
-    private String chickenName;
 
- */
 }

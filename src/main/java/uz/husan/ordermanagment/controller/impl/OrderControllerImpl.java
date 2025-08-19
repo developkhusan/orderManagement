@@ -5,13 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import uz.husan.ordermanagment.controller.OrderController;
 import uz.husan.ordermanagment.dto.orderItem.OrderItemAddDTO;
-import uz.husan.ordermanagment.entity.Order;
 import uz.husan.ordermanagment.message.ResponseMessage;
 import uz.husan.ordermanagment.service.OrderIteamService;
+
 @RestController
 @RequiredArgsConstructor
 public class OrderControllerImpl implements OrderController {
-    private final OrderIteamService  orderIteamService;
+    private final OrderIteamService orderIteamService;
 
 
     @Override
@@ -35,13 +35,6 @@ public class OrderControllerImpl implements OrderController {
     public ResponseEntity<?> deleteOrder(Long id) {
         return null;
     }
-
-    @Override
-    public ResponseEntity<?> buyOrder() {
-        ResponseMessage responseMessage = orderIteamService.buyOrder();
-        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
-    }
-
     @Override
     public ResponseEntity<?> ordersDelivered() {
         ResponseMessage responseMessage = orderIteamService.ordersDelivered();
@@ -51,6 +44,12 @@ public class OrderControllerImpl implements OrderController {
     @Override
     public ResponseEntity<?> orderConfirmation(Long orderId) {
         ResponseMessage responseMessage = orderIteamService.orderConfirmation(orderId);
+        return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
+    }
+
+    @Override
+    public ResponseEntity<?> buyOrder() {
+        ResponseMessage responseMessage = orderIteamService.buyOrder();
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
 }

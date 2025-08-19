@@ -8,6 +8,8 @@ import uz.husan.ordermanagment.dto.meal.MealAddDTO;
 import uz.husan.ordermanagment.message.ResponseMessage;
 @Service
 public interface ChickenService {
+     ResponseMessage getAllUsers(Integer page, Integer size);
+
      ResponseMessage getAllChickens( Integer page, Integer size);
 
      ResponseMessage createChicken( ChickenAddDTO chickenAddDTO);

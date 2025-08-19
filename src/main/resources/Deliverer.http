@@ -1,0 +1,11 @@
+###
+GET http://localhost:8080/deliverer/my-order
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZXZlbG9wa2h1c2FuQGdtYWlsLmNvbSIsImV4cCI6MTc1NjA4OTQ2N30.mGI5R8YqrSK8BqpUPZWIjEwUbcYIwMRCCfTY9tkQ3WU
+#####
+
+// #########################################
+### Get My Shipped Deliveries
+// #########################################
+PUT http://localhost:8080/deliverer/my-shipped-deliver?orderId=2&deliverId=8
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZXZlbG9wa2h1c2FuQGdtYWlsLmNvbSIsImV4cCI6MTc1NjA4OTQ2N30.mGI5R8YqrSK8BqpUPZWIjEwUbcYIwMRCCfTY9tkQ3WU
+

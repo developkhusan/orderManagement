@@ -1,2 +1,26 @@
+###########################################
+### Get All Orders
+###########################################
+GET http://localhost:8080/chef/orders?page=1&size=10
+Content-Type: application/json
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
+
+
+######################################
+### Get All Deliverers
+######################################
+GET http://localhost:8080/chef/deliverers?page=1&size=10
+Content-Type: application/json
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDU0NzA2fQ.1hJITWPpbcb78klSmTLkcPfybXjgswz_bC-ZY-8WCVQ
+#######################################
+###
+### Get Deliverer by ID
+#######################################
+PUT http://localhost:8080/chef/confirm-order?orderId=5&deliverId=12
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MzY1NDU2fQ.aGeptnsdI30B_AS_CjMh3tysk_xO8GiXlB9FnrvwpEM
+
+#########################################
+
 
 

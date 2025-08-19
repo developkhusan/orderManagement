@@ -8,7 +8,5 @@ import uz.husan.ordermanagment.entity.Meal;
 public interface MealRepository extends JpaRepository<Meal, Long> {
     @Override
     Page<Meal> findAll(Pageable pageable);
-
     Page<Meal> findByChickenId(Long chickenId, Pageable pageable);
-
 }

@@ -3,27 +3,24 @@
 #####################################
 
 GET http://localhost:8080/chicken/all?page=1&size=10
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3NjY5Mn0.WBLY8Vy2ACutaB6xWI9sC_KTxGSLCn6_rFfIy2f33uA
-
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac
+###
+#########################################
+### Get Chicken by ID
+#########################################
+GET http://localhost:8080/order/get-list?page=1&size=10&chickenId=1
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac
 
 ###
-GET http://localhost:8080/order/get-list?page=1&size=10&chickenId=4
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3NjY5Mn0.WBLY8Vy2ACutaB6xWI9sC_KTxGSLCn6_rFfIy2f33uA
-
-###
-
 POST http://localhost:8080/order/create
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3ODkzNH0.7Y1J8K71Suz2l3E2HZeRS07e5cgAizcEuuciahk4_eo
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac
 Content-Type: application/json
 
 {
-  "mealId": 4,
+  "mealId": 5,
   "quantity": 1
 
 }
-
 ###
 GET http://localhost:8080/order/buy
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXZydXpiZWsuZGV2QGdtYWlsLmNvbSIsImV4cCI6MTc1NjA3ODkzNH0.7Y1J8K71Suz2l3E2HZeRS07e5cgAizcEuuciahk4_eo
-Content-Type: application/json
-
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9yaXlldmh1c2FuNzRAZ21haWwuY29tIiwiZXhwIjoxNzU2MDgyMDA2fQ.JNRAmkeFDbxwSjhRGbdwOkBo1SwvSvMt0i33vtGBqac

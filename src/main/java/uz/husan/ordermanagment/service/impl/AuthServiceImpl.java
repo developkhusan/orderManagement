@@ -15,6 +15,7 @@ import uz.husan.ordermanagment.service.AuthService;
 import uz.husan.ordermanagment.ServiceJWT.JWTService;
 
 
+import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
@@ -62,15 +63,19 @@ public class AuthServiceImpl implements AuthService {
                         .data("00i8hut348r403t-9ru2fc2ew0ce2djc==")
                         .build();
         }
-         User user = new User();
+        User user = new User();
         user.setFullName(userDTORequest.getFullName());
         user.setEmail(userDTORequest.getEmail());
         String s = new String(Base64.getEncoder().encode(userDTORequest.getEmail().getBytes()));
         user.setPassword(passwordEncoder.encode(userDTORequest.getPassword()))  ;
         user.setEnabled(false);
         user.setRole(Role.USER);
+        user.setBalance(new BigDecimal(0.0));
+        user.setBusy(false);
+        user.setUserLocation(userDTORequest.getUserLocation());
+        user.setImageUrl(userDTORequest.getImageUrl());
         user.setPhoneNumber(userDTORequest.getPhoneNumber());
-        user.setBalance(00.00);
+
         String code = generateCode();
         user.setConfCode(code);
         userRepository.save(user);

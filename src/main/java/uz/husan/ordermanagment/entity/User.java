@@ -1,6 +1,7 @@
 package uz.husan.ordermanagment.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.husan.ordermanagment.entity.enums.Role;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 @EqualsAndHashCode(callSuper = true)
@@ -15,15 +17,17 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User extends AbsEntity implements UserDetails {
+    private String imageUrl;
     private String fullName;
     private String email;
     private String password;
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private Boolean busy;
     private Boolean enabled;
     private String confCode;
-    private Double balance;
+    private BigDecimal balance;
     private String userLocation;
 
     @Override

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @RequiredArgsConstructor
 @Service("OrderService")
 public class OrderIteamServiceImpl implements OrderIteamService {
@@ -82,17 +83,18 @@ public class OrderIteamServiceImpl implements OrderIteamService {
                 .build();
     }
 
+
+
     @Override
     public ResponseMessage createOrder(OrderItemAddDTO orderAddDTO) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(),OrderStatus.PENDING);
+        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.PENDING);
         Optional<Meal> byMealId = mealRepository.findById(orderAddDTO.getMealId());
 
-     if(byMealId.isEmpty()){
-         return ResponseMessage.builder().success(false).message("Meal not found").data(null).build();
-     }
-
+        if(byMealId.isEmpty()){
+            return ResponseMessage.builder().success(false).message("Meal not found").data(null).build();
+        }
 
         Order order;
         if(byClientId.isEmpty()){
@@ -107,12 +109,12 @@ public class OrderIteamServiceImpl implements OrderIteamService {
             order = byClientId.get(); // faqat else ichida chaqiramiz
         }
 
-         OrderItem orderItem = new OrderItem();
-         orderItem.setOrder(order);
-         orderItem.setMeal(byMealId.get());
-         orderItem.setQuantity(orderAddDTO.getQuantity());
-         orderItem.setUnitPrice(byMealId.get().getPrice());
-         orderItem.setTotalPrice(
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        orderItem.setMeal(byMealId.get());
+        orderItem.setQuantity(orderAddDTO.getQuantity());
+        orderItem.setUnitPrice(byMealId.get().getPrice());
+        orderItem.setTotalPrice(
                 BigDecimal.valueOf(orderAddDTO.getQuantity()) // sonni BigDecimal ga o‘giradi
                         .multiply(byMealId.get().getPrice())      // price bilan ko‘paytiradi
         );
@@ -122,10 +124,9 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         //Orderlarga qoshib qoyish
         List<OrderItem> orderItems = order.getOrderItems();
         orderItems.add(orderItem);
-
+        order.setTotalAmount(order.getTotalAmount().add(orderItem.getMeal().getPrice()));
         OrderItem save = orderItemRepository.save(orderItem);
 
-        order.setTotalAmount(order.getTotalAmount().add(orderItem.getMeal().getPrice()));
 
         orderRepository.save(order);
 
@@ -135,7 +136,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
                 .data(getOrderItem(save))
                 .build();
 
-      //  OrderItem orderItem = new OrderItem();
+        //  OrderItem orderItem = new OrderItem();
 
     }
 
@@ -162,6 +163,13 @@ public class OrderIteamServiceImpl implements OrderIteamService {
                     .build();
         }
         Order order = byClientId.get();
+        if(user.getBalance().compareTo(order.getTotalAmount())<0){
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("Not enough balance")
+                    .data(null)
+                    .build();
+        }
         order.setStatus(OrderStatus.READY);
         orderRepository.save(order);
 
@@ -177,14 +185,13 @@ public class OrderIteamServiceImpl implements OrderIteamService {
 
     @Override
     public ResponseMessage ordersDelivered() {
-
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Order> allClientIdAndStatus = orderRepository.findAllClientIdAndStatus(user.getId(), OrderStatus.DELIVERED);
 
-if (allClientIdAndStatus.isEmpty()){
-    return ResponseMessage.builder().success(false).message("Cards no such exists").data(null).build();
+        if (allClientIdAndStatus.isEmpty()){
+            return ResponseMessage.builder().success(false).message("Cards no such exists").data(null).build();
 
-}
+        }
         return ResponseMessage
                 .builder()
                 .message("All orders delivered successfully")
@@ -204,18 +211,17 @@ if (allClientIdAndStatus.isEmpty()){
         if (byId.get().getStatus().equals(OrderStatus.DELIVERED)){
             Order order = byId.get();
             order.setStatus(OrderStatus.CONFIRMED);
-            orderRepository.save(order);
-
-            user.setBalance(user.getBalance()-byId.get().getTotalAmount().doubleValue());
-
+            order.setDeliveryDate(LocalDateTime.now());
+            user.setBalance(user.getBalance().subtract(order.getTotalAmount())); // balansidan buyurtma summasini chiqarish
+            order.getDeliverer().setBalance(order.getDeliverer().getBalance().add(order.getTotalAmount()));
             /// pulni kimga tashlay
-
+            orderRepository.save(order);
             userRepository.save(user);
 
             return ResponseMessage.builder().success(true).message("Order confirmed successfully").data(byId.get()).build();
 
         }
-       return ResponseMessage.builder().success(false).message(" Delivered order not found").data(null).build();
+        return ResponseMessage.builder().success(false).message(" Delivered order not found").data(null).build();
 
     }
 }
