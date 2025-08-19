@@ -26,4 +26,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findByDelivererIdAndStatus(@Param("deliverer") Long deliverer,
                                                 @Param("status") OrderStatus status);
     Optional<Order> findById(Long integer);
+
+    List<Order> findAllByClientIdAndStatusIn(Long clientId, List<OrderStatus> statuses);
+
 }

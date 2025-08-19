@@ -3,7 +3,6 @@ package uz.husan.ordermanagment.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uz.husan.ordermanagment.dto.orders.OrdersShowDTO;
 import uz.husan.ordermanagment.entity.Chicken;

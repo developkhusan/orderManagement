@@ -10,13 +10,19 @@ public interface OrderIteamService {
 
     ResponseMessage createOrder( OrderItemAddDTO orderAddDTO);
 
-    ResponseMessage updateOrder(Long id,  OrderItemAddDTO productDTO);
-
-    ResponseMessage deleteOrder(Long id);
 
     ResponseMessage buyOrder();
 
-    ResponseMessage ordersDelivered();
+    ResponseMessage getOrderHistory();
 
     ResponseMessage orderConfirmation(Long orderId);
+
+    ResponseMessage showCurrentBasket();
+
+    ResponseMessage cancelBasket();
+
+    ResponseMessage deleteOrderItem(Long orderItemId);
+
+     ResponseMessage updateOrderItem(Long orderItemId, Integer newQuantity);
+     ResponseMessage getActiveOrdersForConfirmation();
 }
