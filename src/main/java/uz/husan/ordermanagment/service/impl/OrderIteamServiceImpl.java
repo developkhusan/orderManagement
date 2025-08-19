@@ -210,9 +210,13 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         if (byId.isEmpty()){
             return ResponseMessage.builder().success(false).message("Order not found").data(null).build();
         }
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (byId.get().getStatus().equals(OrderStatus.DELIVERED)){
             Order order = byId.get();
+            if(!user.getId().equals(order.getClient().getId())){
+                return ResponseMessage.builder().success(false).message("You cannot confirm your own order").data(null).build();
+            }
             order.setStatus(OrderStatus.ACCEPTED);
             order.setDeliveryDate(LocalDateTime.now());
             user.setBalance(user.getBalance().subtract(order.getTotalAmount())); // balansidan buyurtma summasini chiqarish
