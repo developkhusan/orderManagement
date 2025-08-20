@@ -26,7 +26,7 @@ public interface OrderController {
     ResponseEntity<?> currentBasket();
 
     @PostMapping("/cancel-basket")
-    ResponseEntity<?> cancelBasket();
+    ResponseEntity<?> cancelBasket(@RequestParam Long orderId);
 
     @DeleteMapping("/basket-item")
     ResponseEntity<?> deleteBasketItem(@RequestParam Long orderItemId);

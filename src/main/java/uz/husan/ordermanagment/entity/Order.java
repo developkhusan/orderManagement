@@ -27,6 +27,7 @@ public class Order extends AbsEntity {
     @ManyToOne
     @JoinColumn(name = "deliverer_id")
     private User deliverer;
+    private String delivererName;
     private BigDecimal totalAmount;
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

@@ -214,9 +214,11 @@ public class OrderIteamServiceImpl implements OrderIteamService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (byId.get().getStatus().equals(OrderStatus.DELIVERED)){
             Order order = byId.get();
+            Optional<User> deliverer = userRepository.findById(order.getDeliverer().getId());
             if(!user.getId().equals(order.getClient().getId())){
                 return ResponseMessage.builder().success(false).message("You cannot confirm your own order").data(null).build();
             }
+            order.setDelivererName(deliverer.get().getFullName());
             order.setStatus(OrderStatus.ACCEPTED);
             order.setDeliveryDate(LocalDateTime.now());
             user.setBalance(user.getBalance().subtract(order.getTotalAmount())); // balansidan buyurtma summasini chiqarish
@@ -267,19 +269,25 @@ public class OrderIteamServiceImpl implements OrderIteamService {
     }
 
     @Override
-    public ResponseMessage cancelBasket() {
+    public ResponseMessage cancelBasket(Long orderId) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Order> byClientId = orderRepository.findByClientIdAndStatus(user.getId(), OrderStatus.PENDING);
-
+        Optional<Order> byClientId = orderRepository.findById(orderId);
         if (byClientId.isEmpty()) {
             return ResponseMessage.builder()
                     .success(false)
-                    .message("You don't have any pending basket to cancel")
+                    .message("order no such exists")
                     .data(null)
                     .build();
         }
 
         Order order = byClientId.get();
+        if (!user.getId().equals(order.getClient().getId())) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You cannot cancel this order")
+                    .data(null)
+                    .build();
+        }
         order.setStatus(OrderStatus.CLIENT_CANCELLED);
         order.setDeliveryDate(LocalDateTime.now()); // bekor qilingan vaqtni belgilab qo‘yish mumkin
         orderRepository.save(order);

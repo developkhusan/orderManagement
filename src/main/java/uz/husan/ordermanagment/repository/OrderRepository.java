@@ -29,4 +29,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> findAllByClientIdAndStatusIn(Long clientId, List<OrderStatus> statuses);
 
+    @Query("select o from Order o where o.status in ('PENDING','CONFIRMED','PREPARATION')")
+    Page<Order> findByStatusPending(Pageable pageable);
+
+
 }

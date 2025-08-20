@@ -19,7 +19,7 @@ public interface OrderIteamService {
 
     ResponseMessage showCurrentBasket();
 
-    ResponseMessage cancelBasket();
+    ResponseMessage cancelBasket(Long orderId);
 
     ResponseMessage deleteOrderItem(Long orderItemId);
 

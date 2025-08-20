@@ -39,8 +39,16 @@ public class ChefServiceImpl implements ChefService {
     }
     @Override
     public ResponseMessage getAllOrders(Integer page, Integer size) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!user.getRole().equals(Role.CHEF)) {
+            return ResponseMessage.builder()
+                    .success(false)
+                    .message("You are not authorized to view orders")
+                    .data(null)
+                    .build();
+        }
         PageRequest pageRequest = PageRequest.of(page - 1, size);
-        Page<OrdersShowDTO> all = orderRepository.findByStatus(OrderStatus.PENDING,pageRequest).map(this::getOrders );
+        Page<OrdersShowDTO> all = orderRepository.findByStatusPending(pageRequest).map(this::getOrders );
         if (all.isEmpty()){
             return ResponseMessage.builder().success(false).message("Order no such exists").data(null).build();
         }

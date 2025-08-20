@@ -46,8 +46,8 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ResponseEntity<?> cancelBasket() {
-        ResponseMessage responseMessage = orderIteamService.cancelBasket();
+    public ResponseEntity<?> cancelBasket(Long orderId) {
+        ResponseMessage responseMessage = orderIteamService.cancelBasket(orderId);
         return ResponseEntity.status(responseMessage.getSuccess() ? 200 : 400).body(responseMessage);
     }
 
