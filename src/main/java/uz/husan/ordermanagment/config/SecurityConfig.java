@@ -27,6 +27,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth ->
                             auth
+                                    .requestMatchers(
+                                            "/chicken/create",
+                                            "/chicken/update",
+                                            "/meal/create",
+                                            "/meal/update"
+                                    ).hasRole("ADMIN")
+
                                 .requestMatchers(
                                         "/auth/**",
                                         "/order/**",
@@ -37,7 +44,6 @@ public class SecurityConfig {
                                         "/v3/**",
                                         "/webjars/**",
                                         "/swagger-ui.html").permitAll()
-                                    .requestMatchers("/chicken/create,/chicken/update,/meal/create,meal/update").hasRole("ADMIN")
                                     .anyRequest()
                                 .authenticated()
                 )

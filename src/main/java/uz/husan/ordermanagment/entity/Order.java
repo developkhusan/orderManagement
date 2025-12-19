@@ -29,6 +29,9 @@ public class Order extends AbsEntity {
     private User deliverer;
     private String delivererName;
     private BigDecimal totalAmount;
+    @ManyToOne
+    @JoinColumn(name = "chicken_id")
+    private Chicken chicken;
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;

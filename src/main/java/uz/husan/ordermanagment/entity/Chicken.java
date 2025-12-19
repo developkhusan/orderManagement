@@ -17,7 +17,7 @@ public class Chicken extends AbsEntity{
     private String chickenName;
     private String chickenLocation;
     private String phoneNumber;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     private User owner;
     private BigDecimal balance;
