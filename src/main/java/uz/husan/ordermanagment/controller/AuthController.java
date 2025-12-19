@@ -19,4 +19,9 @@ public interface AuthController {
      @GetMapping("/confirm")
      ResponseEntity<?> confirm(@RequestParam String code,@RequestParam String email);
 
+     @PostMapping("/forgot-password")
+     ResponseEntity<?> forgotPassword(@RequestParam String email);
+
+     @PostMapping("/reset-password")
+     ResponseEntity<String> resetPassword(@RequestParam String token, @RequestParam String newPassword1,@RequestParam String newPassword2);
 }

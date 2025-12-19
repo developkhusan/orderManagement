@@ -6,7 +6,7 @@ import uz.husan.ordermanagment.dto.meal.MealAddDTO;
 @RequestMapping("/meal")
 public interface MealController {
     @GetMapping("/get-list")
-    ResponseEntity<?> getAllMeals(@RequestParam Integer page, @RequestParam Integer size);
+    ResponseEntity<?> getAllMeals(@RequestParam (defaultValue = "1")Integer page, @RequestParam (defaultValue = "10")Integer size);
     @PostMapping("/create")
     ResponseEntity<?> createMeal(@RequestBody MealAddDTO mealAddDTO);
     @PutMapping("/update")

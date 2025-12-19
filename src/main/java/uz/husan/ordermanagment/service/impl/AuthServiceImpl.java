@@ -85,6 +85,21 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+    public void emailService(String toEmail,String token) {
+        String subject = "Tasdiqlash uchun Tokeningiz";
+        String body = "Hurmatli foydalanuvchi,\n\nSizning tasdiqlash uchun Tokeningiz: " + token + "\n\nIltimos, bu tokenni hech kimga bermang. "+
+                "Hurmat bilan,\n" +
+                "Sizning tizimingiz;";
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("husanchoriyev20040406@gmail.com"); // o'z emailingiz
+        message.setTo(toEmail);
+        message.setSubject(subject);
+        message.setText(body);
+
+        mailSender.send(message);
+    }
+
     public void sendVerificationCode(String toEmail,String code) {
         String subject = "Tasdiqlash kodingiz";
         String body = "Hurmatli foydalanuvchi,\n\nSizning tasdiqlash kodingiz: " + code + "\n\nIltimos, bu kodni hech kimga bermang. Yoki quyidagi link orqali tasdiqlang:\n" +

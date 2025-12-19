@@ -16,10 +16,7 @@ import uz.husan.ordermanagment.entity.OrderItem;
 import uz.husan.ordermanagment.entity.User;
 import uz.husan.ordermanagment.entity.enums.OrderStatus;
 import uz.husan.ordermanagment.message.ResponseMessage;
-import uz.husan.ordermanagment.repository.MealRepository;
-import uz.husan.ordermanagment.repository.OrderItemRepository;
-import uz.husan.ordermanagment.repository.OrderRepository;
-import uz.husan.ordermanagment.repository.UserRepository;
+import uz.husan.ordermanagment.repository.*;
 import uz.husan.ordermanagment.service.OrderIteamService;
 
 import java.math.BigDecimal;
@@ -36,6 +33,7 @@ public class OrderIteamServiceImpl implements OrderIteamService {
     private final MealRepository mealRepository;
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
+    private final ChickenRepository chickenRepository;
 
 
     public OrderIteamShowDTO getOrderItem(OrderItem orderItem) {
@@ -287,6 +285,8 @@ public class OrderIteamServiceImpl implements OrderIteamService {
                     .message("You cannot cancel this order")
                     .data(null)
                     .build();
+        }
+        if(order.getStatus() == OrderStatus.CONFIRMED){
         }
         order.setStatus(OrderStatus.CLIENT_CANCELLED);
         order.setDeliveryDate(LocalDateTime.now()); // bekor qilingan vaqtni belgilab qo‘yish mumkin
